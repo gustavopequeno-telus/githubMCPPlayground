@@ -16,7 +16,8 @@ When this rule is triggered, the Gemini agent must:
 1. **Identify the current local branch** (the branch currently checked out).
 2. **Ensure the branch exists remotely**:
     - If it does not exist on GitHub, create it before proceeding.
-3. **Create a Pull Request** using the following configuration:
+3. **Analyze the full code diff of the current branch** to generate a non-technical, product-oriented summary of the changes.
+4. **Create a Pull Request** using the following configuration:
     - **Source Branch** → The current checked-out branch.
     - **Target Branch** → `main`
     - **Title Format** →  
@@ -24,8 +25,9 @@ When this rule is triggered, the Gemini agent must:
         - **Type** → Derived from the branch prefix (e.g., `story/`, `bugfix/`, `feature/`).
         - **Ticket** → Extracted from the branch identifier (e.g., `JIRA-001` from `story/JIRA-001-navigation-setup`).
         - **Summary** → A concise, one-line description of the implemented modifications.
-4. **Do not merge or rebase automatically** — the PR should remain open for review.
-5. **Apply this rule only to the repository:**  
+    - **Description** → The generated product-oriented summary.
+5. **Do not merge or rebase automatically** — the PR should remain open for review.
+6. **Apply this rule only to the repository:**  
    `gustavopequeno-telus/githubMCPPlayground`
 
 ## Example Pull Request Title
@@ -35,4 +37,3 @@ Story: (JIRA-001) - setup navigation and coordinator flow
 - The PR title must remain short and descriptive (one line only).
 - The rule applies only to the **current working branch**.
 - Gemini should confirm successful **PR creation** once completed.
-
