@@ -9,6 +9,13 @@ Purpose
 
 Rules
 
+- Shorthand command behavior
+  - When a user issues the short command `Create a PR` (or equivalent terse request) without additional parameters, the assistant MUST interpret this as a request to create or update a pull request using the current checked-out branch as the PR head and the repository's default branch as the target, and MUST follow all rules in this document.
+  - If an open pull request already exists for the current branch, the assistant MUST push any local commits to `origin` and then update the existing PR body by programmatically populating the repository's PR template (see Description rules). The assistant must report any push or update errors and stop automated updates if push fails.
+  - The shorthand behavior is a convenience that supplements the existing `Current branch selection` and `Existing PRs and local commits` rules; it does NOT bypass the Remote sync and verification rules, Title format, Description population, or Metadata rules described elsewhere in this file.
+  - If the current branch cannot be determined, or if the workspace is unavailable, the assistant MUST fall back to the repository default branch and explicitly inform the user it used the fallback branch before proceeding.
+  - The assistant MUST NOT add labels, reviewers, or any other metadata unless the user explicitly asked for them in the same shorthand request.
+
 - Current branch selection
   - When asked to create a PR and no head/source branch is explicitly provided, the assistant MUST determine the current checked-out git branch in the workspace and use that branch as the PR head.
   - If the current branch cannot be determined from the workspace (for example, the workspace is not available or git fails), the assistant MUST fall back to the repository's default branch (for example `main`), and MUST explicitly inform the user which branch was used.
@@ -46,6 +53,12 @@ Rules
   - The PR description MUST NOT include sections titled "Key changes", "Notes", or a section listing "Verified remote commit SHAs." These sections are forbidden in the PR body. Verification details such as commit SHAs may be reported by the assistant in its external message to the user but must not be placed inside the PR description.
   - The PR description MUST NOT include a dedicated "Affected files" section or any explicit list of changed files. Do NOT include lists of file paths (for example `Affected files: ...`) in the PR body. If file-level evidence is required for troubleshooting, provide that information only outside the PR body in the assistant's external response when necessary.
   - When a pull request is created successfully, the assistant's final information to the user MUST be only a short confirmation that the PR was created and the PR URL (for example: "PR created: <url>"). The assistant MUST NOT append verification details (SHAs, file lists, or other evidence) after that final confirmation when the PR creation succeeds. If PR creation fails, the assistant MUST provide verification details and evidence (for example remote push errors, differing SHAs, or other diagnostics) in order to help diagnose and fix the failure.
+  - Existing PRs and local commits: If a pull request already exists for the branch being used as the PR head and the local workspace contains commits that are not yet present on the remote branch, the assistant MUST:
+    1. Push the local branch to `origin` so the remote branch contains all workspace commits. The assistant must capture and report any push errors and stop automated updates if the push fails.
+    2. After pushing, verify that the remote branch's last commits match the local branch (compare SHAs). The assistant MUST NOT put raw SHAs into the PR description; verification SHAs may be reported in the assistant's external response only.
+    3. Update the existing pull request body by programmatically populating the repository's PR template (see Description rules above). The assistant MUST synthesize a concise `## Description` from the new commits/diff and must NOT include file lists, raw SHAs, or a dedicated "Affected files" section in the PR body.
+    4. If the assistant cannot infer required template fields from commits/diff, it MUST ask the user for the missing content rather than inserting placeholders.
+    5. On successful PR update (after push and body update), the assistant's final message to the user MUST be only a short confirmation that the PR was updated and the PR URL (for example: "PR updated: <url>"). If any step fails (push, verification mismatch, or PR update), the assistant MUST provide full verification details and exact commands/errors to help the user resolve the issue.
 
 - Metadata
   - The assistant MAY add optional labels or reviewers only if the user explicitly asks for them in the same create-PR request. Otherwise, do not attach labels, reviewers, or assignees automatically.
