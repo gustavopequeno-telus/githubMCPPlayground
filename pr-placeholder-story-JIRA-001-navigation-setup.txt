@@ -1,0 +1,3 @@
+Placeholder commit to create PR for branch story/JIRA-001-navigation-setup
+
+Created by GitHub MCP assistant on 2025-10-24 to ensure there is at least one commit difference from main.
