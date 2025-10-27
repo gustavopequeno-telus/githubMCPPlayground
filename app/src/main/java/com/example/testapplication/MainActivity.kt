@@ -94,7 +94,7 @@ fun TestApplicationApp() {
             .fillMaxSize()
             .padding(innerPadding)) {
             NavHost(navController = navController, startDestination = AppDestinations.HOME.route) {
-                composable(AppDestinations.HOME.route) { HomeScreen() }
+                composable(AppDestinations.HOME.route) { HomeScreen(onBrowseClick = { navController.navigate(AppDestinations.FAVORITES.route) }) }
                 composable(AppDestinations.FAVORITES.route) { BrowseScreen() }
                 composable(AppDestinations.PROFILE.route) { SettingsScreen() }
             }
