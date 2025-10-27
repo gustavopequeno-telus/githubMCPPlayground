@@ -39,7 +39,6 @@ fun HomeScreen(onBrowseClick: () -> Unit) {
 
         RecommendedDestinationsSection()
 
-        PastTripsSection()
 
         Button(onClick = onBrowseClick) {
             Text("Browse Destinations")
