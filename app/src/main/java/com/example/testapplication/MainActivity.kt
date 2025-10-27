@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -90,14 +89,24 @@ fun TestApplicationApp() {
             }
         }
     ) { innerPadding ->
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)) {
-            NavHost(navController = navController, startDestination = AppDestinations.HOME.route) {
-                composable(AppDestinations.HOME.route) { HomeScreen() }
-                composable(AppDestinations.FAVORITES.route) { BrowseScreen() }
-                composable(AppDestinations.PROFILE.route) { SettingsScreen() }
+        NavHost(
+            navController = navController,
+            startDestination = AppDestinations.HOME.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(AppDestinations.HOME.route) {
+                HomeScreen(onBrowseClick = {
+                    navController.navigate(AppDestinations.FAVORITES.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                })
             }
+            composable(AppDestinations.FAVORITES.route) { BrowseScreen() }
+            composable(AppDestinations.PROFILE.route) { SettingsScreen() }
         }
     }
 }
@@ -106,9 +115,6 @@ fun TestApplicationApp() {
 @Composable
 fun AppPreview() {
     TestApplicationTheme {
-        // simple preview: center the Home label
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text("Home")
-        }
+        TestApplicationApp()
     }
 }
