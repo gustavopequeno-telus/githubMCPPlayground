@@ -15,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,7 +33,7 @@ fun HomeScreen(onBrowseClick: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Text("Travel Itinerary", style = androidx.compose.material3.MaterialTheme.typography.headlineMedium)
+        Text("Travel Itinerary", style = MaterialTheme.typography.headlineMedium)
 
         CurrentTripCard()
 
@@ -50,11 +51,11 @@ fun HomeScreen(onBrowseClick: () -> Unit) {
 fun CurrentTripCard() {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
-            Text("Current Trip", style = androidx.compose.material3.MaterialTheme.typography.titleMedium)
+            Text("Current Trip", style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
-            Text("Trip to New York", style = androidx.compose.material3.MaterialTheme.typography.headlineSmall)
+            Text("Trip to New York", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(4.dp))
-            Text("December 15-22, 2024", style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
+            Text("December 15-22, 2024", style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = { /* TODO: Navigate to trip details */ }, modifier = Modifier.align(Alignment.End)) {
                 Text("View Details")
@@ -66,7 +67,7 @@ fun CurrentTripCard() {
 @Composable
 fun RecommendedDestinationsSection() {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text("Recommended Destinations", style = androidx.compose.material3.MaterialTheme.typography.titleMedium)
+        Text("Recommended Destinations", style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -88,7 +89,7 @@ fun RecommendedDestinationCard(index: Int) {
                 .padding(16.dp),
             contentAlignment = Alignment.BottomStart
         ) {
-            Text(destinations[index], style = androidx.compose.material3.MaterialTheme.typography.headlineSmall)
+            Text(destinations[index], style = MaterialTheme.typography.headlineSmall)
         }
     }
 }
@@ -96,7 +97,7 @@ fun RecommendedDestinationCard(index: Int) {
 @Composable
 fun PastTripsSection() {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Past Trips", style = androidx.compose.material3.MaterialTheme.typography.titleMedium)
+        Text("Past Trips", style = MaterialTheme.typography.titleMedium)
         PastTripCard("Trip to Paris", "September 2023")
         PastTripCard("Trip to Rome", "May 2023")
         PastTripCard("Trip to Tokyo", "January 2023")
@@ -107,9 +108,9 @@ fun PastTripsSection() {
 fun PastTripCard(name: String, date: String) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(name, style = androidx.compose.material3.MaterialTheme.typography.bodyLarge)
+            Text(name, style = MaterialTheme.typography.bodyLarge)
             Spacer(modifier = Modifier.height(4.dp))
-            Text(date, style = androidx.compose.material3.MaterialTheme.typography.bodyMedium)
+            Text(date, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
